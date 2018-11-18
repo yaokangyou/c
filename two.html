@@ -1,0 +1,152 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+    <meta charset="UTF-8">
+    <title>电商网站</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+    .content{
+        background-color: white;
+    }
+        .box {
+            width: 400px;
+            height: 42px;
+            border-radius: 8px;
+            position: absolute;
+            margin: 0;
+            right: 0;
+        }
+        ul {
+            list-style: none;
+            position: relative;
+        }
+        li {
+            float: left;
+            width: 83px;
+            height: 42px;
+            text-align: center;
+            font: 500 16px/42px "simsun";
+            cursor: pointer;
+            color: #2d2a2a;
+        }
+        span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 83px;
+            height: 42px;
+            background: url("imgs/cloud.jpg") no-repeat;
+                background-size: 81px 37px;
+        }
+        a {
+    list-style: none;
+    text-decoration: none;
+}
+        #time {
+            position: absolute;
+            bottom: 40px;
+            right: 55px;
+        }
+    </style>
+ </head>
+
+ <body>
+  <div class="content">
+    <div class="header_content">
+      <div class="header">
+        <div class="box">
+            <span></span>
+            <ul>
+                <li><a href="two.html">时间导航</a></li>
+                <li><a href="index.html">主页</a></li>
+                <li><a href="one.html">家庭用品</a></li>                
+            </ul>
+        </div>
+        <div class="logo">
+          <img src="./imgs/logo.gif">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner2"></div>
+
+  <div id="time">
+  </div>
+
+ </body>
+ </html>
+
+ <script>
+    window.onload = function () {
+        t = document.getElementById("time");
+              var now= new Date( ) ;
+              var hour = now.getHours() ;
+              if (hour>=0 && hour <=12)
+                  tHTML = "<H2>上午好!</H2>";
+              if (hour>12 && hour<= 18)
+                tHTML = "<H2>下午好!</H2>";
+              if (hour>18 && hour <24)
+                tHTML = "<H2>晚上好!</H2>";
+                getDate = "<H2>今天日期:"+(now.getYear()-100+2000)+"年"+(now.getMonth( )+1)+"月"+now.getDate()+"日</H2>";
+                t.innerHTML = tHTML + getDate +"<H2>现在时间:"+now.getHours()+"点"+now.getMinutes( )+"分</H2>"; 
+
+                //需求1：鼠标放到哪个li上面，span对应移动到该li上。移开后，回到原位置。
+            //需求2：鼠标点击那个li记录该li标签，移开的时候span回到该记录的li标签上。
+            //步骤：
+            //1.老三步
+            //2.计数器
+
+
+            //需求1：鼠标放到哪个li上面，span对应移动到该li上。移开后，回到原位置。
+            //1.老三步
+            var liArr = document.getElementsByTagName("li");
+            var liWidth = liArr[0].offsetWidth;
+            var span = document.getElementsByTagName("span")[0];
+            //计数器
+            var count = 0;
+
+
+            //for循环绑定事件
+            for(var i=0;i<liArr.length;i++){
+                //自定义属性，然后绑定index属性为索引值
+                liArr[i].index = i;
+                //鼠标进入事件
+                liArr[i].onmouseover = function () {
+                    //让span运动到该li的索引值位置
+                    //图片运动需要封装的方法
+                    animate(span,this.index*liWidth);
+                }
+                //鼠标移开
+                liArr[i].onmouseout = function () {
+                    //让span运动到该li的索引值位置
+                    //图片运动需要封装的方法
+                    animate(span,count*liWidth);
+                }
+                //点击事件，记录功能
+                liArr[i].onclick = function () {
+                    //需要一个计数器，每次点击以后把所以只记录下来
+                    //因为onmouseout事件要用到这个计数器，所以应该是一个全局变量
+                    count = this.index;
+                    animate(span,count*liWidth);
+                }
+
+            }
+
+            //缓动动画封装
+            function animate(ele,target) {
+                clearInterval(ele.timer);
+                ele.timer = setInterval(function () {
+                    var step = (target-ele.offsetLeft)/10;
+                    step = step>0?Math.ceil(step):Math.floor(step);
+                    ele.style.left = ele.offsetLeft + step + "px";
+                    console.log(1);
+                    if(Math.abs(target-ele.offsetLeft)<Math.abs(step)){
+                        ele.style.left = target + "px";
+                        clearInterval(ele.timer);
+                    }
+                },18);
+            }
+    
+}
+</script>
