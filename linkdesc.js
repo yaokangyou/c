@@ -6,10 +6,13 @@ function display() {
     message += "<li><b>PHONE: </b>" + document.form1.phone.value + "</ul>";
     DispWin.document.write(message);
 }
+<<<<<<< master OURS
 function cleardesc() {
+=======
      d = document.getElementById("description");
      d.innerHTML = "主页";
 }
+>>>>>>> master THEIRS
 function hover(e) {
     if (!e) var e = window.event;
     whichlink = (e.target) ? e.target.id : e.srcElement.id;
